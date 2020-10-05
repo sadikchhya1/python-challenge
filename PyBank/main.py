@@ -3,72 +3,80 @@ import csv
 
 budget_data = os.path.join("Resources", "budget_data.csv")
 
-with open(budget_data, newline="") as csv_budget:
-    budget_reader = csv.reader(csv_budget,delimeter=',')
-
-   ## print(csvreader)
-    budget_header = next(csv_budget)##or budget_reader)
-
-##with open(csvpath, newline='') as csvfile:
-    ##csvreader = csv.reader(csvfile,delimeter=",")
-    ##print(cvsreader)
+with open(budget_data) as csv_budget:
+    budget_reader = csv.reader(csv_budget)
+    next(budget_reader)
+   
+    #print(cvsreader)
     
-    ##csv_header = next(csvreader)
-    ##print(f"CSV Header: {csv_header}")
+     #variables/define
+    total_months = 0
+    rev = []
+    date = []
+    totalrev = 0 
+    averagechange = 0
+    totalrevchange = 0
+    #total_profit = 0
+    #total_loss = 0
+    greatestincrease_amt = 0
+    greatestinc_month = 0
+    greatestdecrease_amt = 0
+    greatesedec_month = 0
+    previousrev =  0
+    currentrev = 0
+    difference = 0
+    difflist = []
+    
 
-#variables
-total_months = 0
-rev = []
-date = []
-totalrev = 0 
-averagechange = 0
-totalrevchange = 0
-#total_profit = 0
-#total_loss = 0
-greatestincrease_amt = 0
-greatestdecrease_amt = 0
-previousamount =  0
-difference = 0
-diflist = []
+    #The total number of months included in the dataset
+    #Loop
 
-#The total number of months included in the dataset
+    for row in budget_reader:
+        total_months += 1
+        totalrev += int(row[1])
+       
+    #date.append(row[0])
+        # totalrev.append(row[1])
+       
+        #The average of the changes in "Profit/Losses" over the entire period
+    
+        if total_months == 1:
+            difference = 0
+        else:
+            difference = int(row[1]) - previousrev
+        
+        previousrev = int(row[1]) 
+        difflist.append(difference)
+    averagechange = (sum(difflist)/(total_months-1))
+       
+    #The greatest increase in profits (date and amount) over the entire period
+        
+        #greatestincrease_amt = max(difference)
+        #greatestinc_month = str(date[difference.index(max(difference))])
+      
+    #The greatest decrease in losses (date and amount) over the entire period
+    #sum of all differences and the least amount 
 
-for row in csv_budget:## csvreader or csv_budget?
+        # greatestdecrease_amt = min(difference)
+         #greatestdec_month = str(date[difference.index9min9difference))])
 
-    date.append(row[0])
-    totalrev.append(row[1])
-    total_months = total_months + 1
+    #print on screen summary
+    print("\nFinancial Analysis")
+    print("--------------------")
+    print("Total Months:" + str(total_months))
+    print("Total: $" + str(totalrev))
+    print("Average Change: $" + str(round(averagechange ,2)))
+    print("Greatest Increase in profits")
+    print("Greatest Decrease in profits")
 
-
-#The net total amount of "Profit/Losses" over the entire period
-totalrev = totalrev + int(row[1])
-
-
-#The average of the changes in "Profit/Losses" over the entire period
-#average change = row B4-B3 in excel
-##averagechange = int(row[1)]) ##??
-difference = averagerevchange - previousamount
-differencelist.append(difference)
-previousamount = averagerevenuechange
-
-#The greatest increase in profits (date and amount) over the entire period
-#sum of all the differnces and the highest amount one 
-if averagerevechange > greatestincrease_amt:
-     greatestincrease_amt = averagerevchange
-     max_months = row[0]
-
-if averagerevchange < greatestdecrease_amt:
-    greatestdecrease_amt = averagerevchange
-    min_months = row[0]
-
-#The greatest decrease in losses (date and amount) over the entire period
-#sum of all differences and the least amount 
-
-#print on screen summary
-##print("Financial Analysis")
-##print("--------------------")
-##print("Total Months:" + str(row_month)
-##print("Total: $" + str(total_budg))
-##print("Average Change: $" + str(round(avg_")
-##print("Greatest Increase in profits:" + max_increase_month) + " (" + str(max_increase) + ")").....???
-##print("Greatest Decrease in profit:" + )
+#output to a text file
+save_file = "Bankfile.txt"
+csvpath = os.path.join("Analysis", save_file)
+with open(csvpath,'w') as text:
+    text.write("\nFinancial Analysis")
+    text.write("\n--------------------")
+    text.write("\nTotal Months:" + str(total_months))
+    text.write("\nTotal: $" + str(totalrev))
+    text.write("\nAverage Change: $" + str(round(averagechange ,2)))
+    text.write("\nGreatest Increase in profits")
+    text.write("\nGreatest Decrease in profits")
